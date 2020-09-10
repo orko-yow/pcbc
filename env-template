@@ -1,0 +1,5 @@
+CONNECTION_URL=mongodb://<mongodb_connection_url>
+ACCESS_TOKEN_SECRET=<access_token_secret>
+ALLOWED_USER=<userName>:<secret>
+SERVER_HOST=<server_host>
+SERVER_PORT=3000
