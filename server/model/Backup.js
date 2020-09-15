@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// MongoDB schema for backups
 const BackupSchema = mongoose.Schema({
     name: {
         type: String,

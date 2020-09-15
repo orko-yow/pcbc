@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Mongo DB Schema for individual cards
 const CardSchema = mongoose.Schema({
     id: {
         type: String,

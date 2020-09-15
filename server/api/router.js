@@ -55,7 +55,7 @@ router.post('/backups', authenticateToken, async (req, res) => {
         const backupName = setCode + "_" + Date.now();
 
         try {
-            let pokeCards = await APIUtils.GetPokeCards(setCode, backupName);
+            let pokeCards = await APIUtils.GetPokeCardsAndAddReference(setCode, backupName);
             await Card.insertMany(pokeCards);
             let backup = new Backup({
                 name: backupName
@@ -76,7 +76,10 @@ router.get('/cards', authenticateToken, async (req, res) => {
         query.rarity = req.query.rarity;
     }
     if(req.query.name) {
-        query.name = req.query.name;
+        query.name = {
+            "$regex": req.query.name,
+            "$options": "i"
+        };
     }
     if(req.query.hp && req.query.op) {
         query.hp = {};
@@ -90,10 +93,11 @@ router.get('/cards', authenticateToken, async (req, res) => {
         let cards = await Card.find(query, {_id:0, __v: 0});
         res.json(cards);    
     } catch (error) {
-        res.json({ status: 401, message: "failed to save any data" + error });
+        res.json({ status: 401, message: "failed to find any data" + error });
     }
 });
 
+// authentication middleware for the API calls
 function authenticateToken(req, res, nextCall) {
     const auth0Header = req.headers['authorization'];
     if (auth0Header) {
@@ -107,7 +111,6 @@ function authenticateToken(req, res, nextCall) {
                 } else {
                     res.sendStatus(403);
                 }
-                
             });
         } else {
             res.sendStatus(401);
@@ -115,7 +118,6 @@ function authenticateToken(req, res, nextCall) {
     } else {
         res.sendStatus(401);
     }
-
 }
 
 module.exports = router;

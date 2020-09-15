@@ -1,9 +1,9 @@
 require("dotenv").config();
-const express = require("express")
+const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const apiRouter = require("./api/router");
 const authRouter = require("./api/auth");
-const mongoUtils = require("./utils/MongoUtils");
 const path = require("path");
 
 const app = express();
@@ -27,7 +27,13 @@ app.use(AUTH_ENDPOINT_BASE, authRouter);
 // API middleware
 app.use(API_ENDPOINT_BASE, apiRouter);
 
-mongoUtils.initializeMongo().then(() => {
+const initializeMongo = async () => {
+    console.log("Connecting to Mongo:");
+    // connect to DB
+    await mongoose.connect(process.env.CONNECTION_URL, {useUnifiedTopology: true, useNewUrlParser: true, connectTimeoutMS:6000});
+};
+
+initializeMongo().then(() => {
     // start express server
     app.listen(SERVER_PORT, () => {
         console.log(`Server started at http://${SERVER_HOST}:${SERVER_PORT}`)

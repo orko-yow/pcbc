@@ -3,8 +3,7 @@ const express = require("express");
 const auth = express.Router();
 const jwt = require("jsonwebtoken");
 
-
-// get list of backups
+// very basic jwt login mechanism. Uses user information from .env file
 auth.post('/login', (req, res) => {
 	let userName = req.body.username;
 	let secret = req.body.secret;

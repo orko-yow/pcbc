@@ -61,7 +61,7 @@ function SearchArea(props) {
 
   const setHitpointHpHandler = (newHp) => {
     if (!newHp) {
-      newHp = "";
+      newHp = 0;
     }
     let op = hitpoint && hitpoint.op ? hitpoint.op : "";
     setHitpoint({ hp: newHp, op: op });
@@ -75,7 +75,7 @@ function SearchArea(props) {
             <Typography>Name:</Typography>
           </Grid>
           <Grid item>
-              <TextField onChange={(event) => setNameHandler(event.target.value)} />
+              <TextField value={name} onChange={(event) => setNameHandler(event.target.value)} />
           </Grid>
         </Grid>
       </Grid>
@@ -118,7 +118,7 @@ function SearchArea(props) {
                   </Select>
             </Grid>
             <Grid item>
-              <TextField type="number"
+              <TextField type="number" value={hitpoint.hp}
                     onChange={(event) => setHitpointHpHandler(event.target.value)}
                   />
             </Grid>

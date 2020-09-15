@@ -21,7 +21,6 @@ export const login = async (userName, secret) => {
 		.catch(function (err) {
 			console.log(err);
 		});
-	console.log(authResponse.data);
 	if (authResponse.data.status === 200) {
 		const token = authResponse.data.accessToken;
 		Cookies.set("access-token", token, { expires: 1 });

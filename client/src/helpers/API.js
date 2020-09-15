@@ -7,12 +7,24 @@ const API = axios.create({
   responseType: "json"
 });
 
-export const getAllBackups = async () => {
-    let backups = await API.get('backups', {
+const getParams = (optionParam) => {
+    const authHeader = {
         headers: {
             Authorization: 'Bearer ' + getAccessToken()
         }
-    }).catch((error) => {
+    };
+    if (optionParam) {
+        return {
+            ...optionParam,
+            ...authHeader
+        };
+    } else {
+        return authHeader;
+    }
+};
+
+export const getAllBackups = async () => {
+    let backups = await API.get('backups', getParams()).catch((error) => {
         let errorCode = error.response.status;
         if (errorCode === 401) {
             // clear the auth
@@ -23,29 +35,18 @@ export const getAllBackups = async () => {
 };
 
 export const createBackups = async (setCode, token) => {
-    let backups = await API.post('backups', { setCode: setCode }, {
-        headers: {
-            Authorization: 'Bearer ' + getAccessToken()
-        }
-    });
+    let backups = await API.post('backups', { setCode: setCode }, getParams());
     return backups.data;
 };
 
 export const removeBackup = async (backupId, token) => {
-    let removedBackup = await API.delete('backups/' + backupId, {
-        headers: {
-            Authorization: 'Bearer ' + getAccessToken()
-        }
-    });
+    let removedBackup = await API.delete('backups/' + backupId, getParams());
     return removedBackup.data;
 };
 
 export const searchCards = async (query, token) => {
-    let cards = await API.get('cards', {
-        params: query,
-        headers: {
-            Authorization: 'Bearer ' + getAccessToken()
-        }
-      });
+    let cards = await API.get('cards', getParams({
+        params: query
+    }));
     return cards.data;
 };
