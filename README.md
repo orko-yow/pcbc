@@ -29,3 +29,9 @@ This app uses following API endpoints:
 * POST /backups {setCode}
   * Given a set code, server fetches the cards for the given set and store them. Also tags them with a unique backup Id.
 
+## Instruction to build/deploy:
+* You will need node (tried on 12) and mongodb installed (if you are using a remote/cloud hosted mongo db, you just need to update the config in the next step).
+* Once you checkout the branch, you need to copy `env-template` and rename it to `.env` and update the fields.
+* If needed, you need to update the base host URL in `/client/src/helpers/config.js`.
+* Now you can run `npm install && npm run build`
+* If everything went smoothly you can start the app by running `npm start`
